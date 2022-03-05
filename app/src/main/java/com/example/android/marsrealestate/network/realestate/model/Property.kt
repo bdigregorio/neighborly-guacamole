@@ -15,6 +15,6 @@
  *
  */
 
-package com.example.android.marsrealestate.network
+package com.example.android.marsrealestate.network.realestate.model
 
-class MarsProperty()
+class Property()
