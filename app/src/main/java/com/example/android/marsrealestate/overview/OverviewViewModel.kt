@@ -20,11 +20,9 @@ package com.example.android.marsrealestate.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.marsrealestate.network.realestate.RealEstateService
-import com.example.android.marsrealestate.network.realestate.model.Property
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
@@ -49,14 +47,14 @@ class OverviewViewModel : ViewModel() {
      * Sets the value of the status LiveData to the Mars API status.
      */
     private fun getMarsRealEstateProperties() {
-        RealEstateService.getProperties().enqueue(object : Callback<List<Property>> {
-            override fun onFailure(call: Call<List<Property>>, t: Throwable) {
-                _response.value = "Network Error: ${t.message}"
+        viewModelScope.launch {
+            runCatching {
+                RealEstateService.getProperties()
+            }.onSuccess { properties ->
+                _response.value = "Network Success: ${properties.size} properties available on Mars"
+            }.onFailure { e ->
+                _response.value = "Network Error: ${e.message}"
             }
-
-            override fun onResponse(call: Call<List<Property>>, response: Response<List<Property>>) {
-                _response.value = "Network Success: ${response.body()?.size} properties available on Mars"
-            }
-        })
+        }
     }
 }
