@@ -22,14 +22,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 30
-    buildFeatures {
-        dataBinding true
-    }
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.example.android.marsrealestate"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"  
     }
@@ -47,14 +44,14 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // Kotlin
-    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
 
     // Constraint Layout
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
@@ -64,22 +61,20 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
 
     // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
 
     // Core with Ktx
-    implementation "androidx.core:core-ktx:$version_core"
+    implementation "androidx.core:core-ktx:$version_androidx_core"
 
     // Moshi
     implementation "com.squareup.moshi:moshi:$version_moshi"
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
     
-    // Retrofit - Deprecated plugins - No more required
-    // implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    // implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
-
-    // Retrofit with Moshi Converter
+    // Retrofit
+     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 
     // Coroutines - Deprecated - No more required
