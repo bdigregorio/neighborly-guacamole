@@ -1,6 +1,7 @@
 package com.example.android.marsrealestate.network.realestate
 
 import com.example.android.marsrealestate.network.Network
+import com.example.android.marsrealestate.network.realestate.model.Property
 import retrofit2.Call
 
 internal object RealEstateService {
@@ -9,5 +10,5 @@ internal object RealEstateService {
         Network.retrofit.create(RealEstateRetrofitApi::class.java)
     }
 
-    fun getProperties(): Call<String> = api.getProperties()
+    fun getProperties(): Call<List<Property>> = api.getProperties()
 }
