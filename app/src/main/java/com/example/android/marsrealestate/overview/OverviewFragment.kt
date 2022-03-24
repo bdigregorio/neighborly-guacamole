@@ -26,7 +26,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.android.marsrealestate.R
-import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
+import com.example.android.marsrealestate.databinding.GridViewItemBinding
 
 /**
  * This fragment shows the the status of the Mars real-estate web services transaction.
@@ -35,7 +35,7 @@ class OverviewFragment : Fragment() {
 
     private val viewModel: OverviewViewModel by viewModels()
     private val binding by lazy {
-        FragmentOverviewBinding.inflate(LayoutInflater.from(context))
+        GridViewItemBinding.inflate(LayoutInflater.from(context))
     }
 
     override fun onCreateView(

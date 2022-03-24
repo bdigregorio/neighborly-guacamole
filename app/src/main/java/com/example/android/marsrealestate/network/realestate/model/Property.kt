@@ -22,7 +22,7 @@ import com.squareup.moshi.Json
 data class Property(
     val id: String,
     @Json(name = "img_src")
-    val imgSrcUrl: String,
+    val imageUrl: String,
     val type: String,
     val price: Double
 )
