@@ -18,9 +18,13 @@
 package com.example.android.marsrealestate.overview
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
 
@@ -29,28 +33,22 @@ import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
  */
 class OverviewFragment : Fragment() {
 
-    /**
-     * Lazily initialize our [OverviewViewModel].
-     */
-    private val viewModel: OverviewViewModel by lazy {
-        ViewModelProvider(this).get(OverviewViewModel::class.java)
+    private val viewModel: OverviewViewModel by viewModels()
+    private val binding by lazy {
+        FragmentOverviewBinding.inflate(LayoutInflater.from(context))
     }
 
-    /**
-     * Inflates the layout with Data Binding, sets its lifecycle owner to the OverviewFragment
-     * to enable Data Binding to observe LiveData, and sets up the RecyclerView with an adapter.
-     */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val binding = FragmentOverviewBinding.inflate(inflater)
-
-        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding.lifecycleOwner = this
-
-        // Giving the binding access to the OverviewViewModel
         binding.viewModel = viewModel
+        binding.photosGrid.adapter = PhotoGridAdapter()
 
         setHasOptionsMenu(true)
+
         return binding.root
     }
 
