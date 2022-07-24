@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
+import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 
 /**
  * This fragment shows the the status of the Mars real-estate web services transaction.
@@ -45,7 +46,9 @@ class OverviewFragment : Fragment() {
     ): View {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.photosGrid.adapter = PhotoGridAdapter()
+        binding.photosGrid.adapter = PhotoGridAdapter(
+            PhotoGridAdapter.PhotoClickListener { viewModel.displayPropertyDetails(it) }
+        )
 
         setHasOptionsMenu(true)
 

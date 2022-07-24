@@ -26,7 +26,7 @@ import com.example.android.marsrealestate.databinding.GridViewItemBinding
 import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 
 
-class PhotoGridAdapter : ListAdapter<MarsProperty, PhotoGridAdapter.MarsPropertyViewHolder>(PhotoGridDiffer) {
+class PhotoGridAdapter(private val photoClickListener: PhotoClickListener) : ListAdapter<MarsProperty, PhotoGridAdapter.MarsPropertyViewHolder>(PhotoGridDiffer) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarsPropertyViewHolder {
         return MarsPropertyViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
@@ -35,6 +35,7 @@ class PhotoGridAdapter : ListAdapter<MarsProperty, PhotoGridAdapter.MarsProperty
     override fun onBindViewHolder(holder: MarsPropertyViewHolder, position: Int) {
         val marsProperty = getItem(position)
         holder.bind(marsProperty)
+        holder.itemView.setOnClickListener { photoClickListener.handleClick(marsProperty) }
     }
 
     class MarsPropertyViewHolder(private var binding: GridViewItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -42,6 +43,10 @@ class PhotoGridAdapter : ListAdapter<MarsProperty, PhotoGridAdapter.MarsProperty
             binding.marsProperty = marsProperty
             binding.executePendingBindings()
         }
+    }
+
+    class PhotoClickListener(val onClick: (marsProperty: MarsProperty) -> Unit) {
+        fun handleClick(marsProperty: MarsProperty) = onClick(marsProperty)
     }
 
     companion object PhotoGridDiffer : DiffUtil.ItemCallback<MarsProperty>() {
