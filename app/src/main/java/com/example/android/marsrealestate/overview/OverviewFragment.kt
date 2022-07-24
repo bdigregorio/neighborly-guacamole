@@ -26,7 +26,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.android.marsrealestate.R
-import com.example.android.marsrealestate.databinding.GridViewItemBinding
+import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
 
 /**
  * This fragment shows the the status of the Mars real-estate web services transaction.
@@ -35,7 +35,7 @@ class OverviewFragment : Fragment() {
 
     private val viewModel: OverviewViewModel by viewModels()
     private val binding by lazy {
-        GridViewItemBinding.inflate(LayoutInflater.from(context))
+        FragmentOverviewBinding.inflate(LayoutInflater.from(context))
     }
 
     override fun onCreateView(
@@ -43,10 +43,9 @@ class OverviewFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
-        // Set the viewModel in the binding in order to access the viewModel from the layout via <data>
         binding.viewModel = viewModel
+        binding.photosGrid.adapter = PhotoGridAdapter()
 
         setHasOptionsMenu(true)
 

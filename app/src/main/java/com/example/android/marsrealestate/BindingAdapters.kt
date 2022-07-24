@@ -20,8 +20,12 @@ package com.example.android.marsrealestate
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.android.marsrealestate.network.realestate.model.MarsProperty
+import com.example.android.marsrealestate.overview.PhotoGridAdapter
 
 @BindingAdapter("loadImageFrom")
 fun loadImageFrom(imageView: ImageView, imageUrl: String?) {
@@ -39,5 +43,11 @@ fun loadImageFrom(imageView: ImageView, imageUrl: String?) {
                     .error(R.drawable.ic_broken_image)
             ).into(imageView)
     }
+}
+
+@BindingAdapter("photoListBinding")
+fun photoListBinding(recyclerView: RecyclerView, marsProperties: List<MarsProperty>) {
+    val adapter = recyclerView.adapter as PhotoGridAdapter
+    adapter.submitList(marsProperties)
 }
 

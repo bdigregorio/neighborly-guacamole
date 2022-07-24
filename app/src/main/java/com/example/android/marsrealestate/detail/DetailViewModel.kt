@@ -19,10 +19,10 @@ package com.example.android.marsrealestate.detail
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import com.example.android.marsrealestate.network.realestate.model.Property
+import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 
 /**
  * The [ViewModel] that is associated with the [DetailFragment].
  */
-class DetailViewModel(@Suppress("UNUSED_PARAMETER")property: Property, app: Application) : AndroidViewModel(app) {
+class DetailViewModel(@Suppress("UNUSED_PARAMETER")marsProperty: MarsProperty, app: Application) : AndroidViewModel(app) {
 }

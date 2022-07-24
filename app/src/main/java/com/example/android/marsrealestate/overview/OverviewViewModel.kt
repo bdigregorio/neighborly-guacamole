@@ -22,7 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.marsrealestate.network.realestate.RealEstateService
-import com.example.android.marsrealestate.network.realestate.model.Property
+import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 import kotlinx.coroutines.launch
 
 /**
@@ -33,8 +33,8 @@ class OverviewViewModel : ViewModel() {
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> by ::_status
 
-    private val _property = MutableLiveData<Property>()
-    val property: LiveData<Property> by ::_property
+    private val _marsProperties = MutableLiveData<List<MarsProperty>>(emptyList())
+    val marsProperties: LiveData<List<MarsProperty>> by ::_marsProperties
 
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
@@ -51,7 +51,7 @@ class OverviewViewModel : ViewModel() {
             try {
                 val properties = RealEstateService.getProperties()
                 if (properties.isNotEmpty()) {
-                    _property.value = properties[1]
+                    _marsProperties.value = properties
                 }
             } catch (e: Exception) {
                 _status.value = "Network Error: ${e.message}"
