@@ -17,14 +17,15 @@
 
 package com.example.android.marsrealestate
 
+import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.android.marsrealestate.network.realestate.model.MarsProperty
+import com.example.android.marsrealestate.network.realestate.response.MarsPropertiesResponse
 import com.example.android.marsrealestate.overview.PhotoGridAdapter
 
 @BindingAdapter("loadImageFrom")
@@ -45,9 +46,32 @@ fun loadImageFrom(imageView: ImageView, imageUrl: String?) {
     }
 }
 
-@BindingAdapter("photoListBinding")
-fun photoListBinding(recyclerView: RecyclerView, marsProperties: List<MarsProperty>) {
-    val adapter = recyclerView.adapter as PhotoGridAdapter
-    adapter.submitList(marsProperties)
+@BindingAdapter("photoListBoundTo")
+fun photoListBoundTo(recyclerView: RecyclerView, response: MarsPropertiesResponse) {
+    when (response) {
+        is MarsPropertiesResponse.Success -> {
+            val adapter = recyclerView.adapter as PhotoGridAdapter
+            adapter.submitList(response.marsProperties)
+        }
+        is MarsPropertiesResponse.Loading, is MarsPropertiesResponse.Error -> {}
+    }
+}
+
+@BindingAdapter("imageSourceBoundTo")
+fun imageSourceBoundTo(imageView: ImageView, response: MarsPropertiesResponse) {
+    when (response) {
+        is MarsPropertiesResponse.Loading -> {
+            imageView.visibility = View.VISIBLE
+            imageView.setImageResource(R.drawable.loading_animation)
+        }
+        is MarsPropertiesResponse.Success -> {
+            imageView.visibility = View.GONE
+        }
+        is MarsPropertiesResponse.Error -> {
+            imageView.visibility = View.VISIBLE
+            imageView.setImageResource(R.drawable.ic_broken_image)
+            Log.e("BindingAdapters::imageSourceBoundTo", "${response.exception.message}")
+        }
+    }
 }
 

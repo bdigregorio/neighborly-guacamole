@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.marsrealestate.network.realestate.RealEstateService
 import com.example.android.marsrealestate.network.realestate.model.MarsProperty
+import com.example.android.marsrealestate.network.realestate.response.MarsPropertiesResponse
 import kotlinx.coroutines.launch
 
 /**
@@ -30,11 +31,8 @@ import kotlinx.coroutines.launch
  */
 class OverviewViewModel : ViewModel() {
 
-    private val _status = MutableLiveData<String>()
-    val status: LiveData<String> by ::_status
-
-    private val _marsProperties = MutableLiveData<List<MarsProperty>>(emptyList())
-    val marsProperties: LiveData<List<MarsProperty>> by ::_marsProperties
+    private val _marsProperties = MutableLiveData<MarsPropertiesResponse>(MarsPropertiesResponse.Loading)
+    val marsProperties: LiveData<MarsPropertiesResponse> by ::_marsProperties
 
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
@@ -48,13 +46,14 @@ class OverviewViewModel : ViewModel() {
      */
     private fun getMarsRealEstateProperties() {
         viewModelScope.launch {
+            _marsProperties.value = MarsPropertiesResponse.Loading
             try {
                 val properties = RealEstateService.getProperties()
                 if (properties.isNotEmpty()) {
-                    _marsProperties.value = properties
+                    _marsProperties.value = MarsPropertiesResponse.Success(properties)
                 }
             } catch (e: Exception) {
-                _status.value = "Network Error: ${e.message}"
+                _marsProperties.value = MarsPropertiesResponse.Error(e)
             }
         }
     }
