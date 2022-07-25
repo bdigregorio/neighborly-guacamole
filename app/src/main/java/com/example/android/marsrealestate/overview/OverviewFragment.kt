@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
+import com.example.android.marsrealestate.network.realestate.PropertyTypeApiFilter
 import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 
 /**
@@ -53,6 +55,16 @@ class OverviewFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.overflow_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.show_rent_menu -> viewModel.updateFilter(PropertyTypeApiFilter.RENT)
+            R.id.show_buy_menu -> viewModel.updateFilter(PropertyTypeApiFilter.BUY)
+            R.id.show_all_menu -> viewModel.updateFilter(PropertyTypeApiFilter.ALL)
+            else -> return false
+        }
+        return true
     }
 
     private fun initializeBinding() {
