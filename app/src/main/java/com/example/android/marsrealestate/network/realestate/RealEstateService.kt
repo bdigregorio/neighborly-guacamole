@@ -9,5 +9,12 @@ internal object RealEstateService {
         Network.retrofit.create(RealEstateRetrofitApi::class.java)
     }
 
-    suspend fun getProperties(): List<MarsProperty> = api.getProperties()
+    suspend fun getProperties(propertyType: PropertyTypeApiFilter): List<MarsProperty> = api.getProperties(propertyType.value)
+
+}
+
+enum class PropertyTypeApiFilter(val value: String) {
+    RENT("rent"),
+    BUY("buy"),
+    ALL("all")
 }
