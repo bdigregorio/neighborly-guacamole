@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
 import com.example.android.marsrealestate.network.realestate.model.MarsProperty
@@ -43,23 +44,31 @@ class OverviewFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View = binding.root.also {
+        initializeBinding()
+        setHasOptionsMenu(true)
+        subscribeToNavigationEvent()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.overflow_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun initializeBinding() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.photosGrid.adapter = PhotoGridAdapter(
             PhotoGridAdapter.PhotoClickListener { viewModel.displayPropertyDetails(it) }
         )
-
-        setHasOptionsMenu(true)
-
-        return binding.root
     }
 
-    /**
-     * Inflates the overflow menu that contains filtering options.
-     */
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overflow_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun subscribeToNavigationEvent() {
+        viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner) { marsProperty ->
+            if (marsProperty != null) {
+                findNavController().navigate(OverviewFragmentDirections.actionShowDetail(marsProperty))
+                viewModel.displayPropertyDetailsComplete()
+            }
+        }
     }
 }
