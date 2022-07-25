@@ -20,7 +20,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 
 /**
@@ -29,6 +31,26 @@ import com.example.android.marsrealestate.network.realestate.model.MarsProperty
 class DetailViewModel(marsProperty: MarsProperty, app: Application) : AndroidViewModel(app) {
     private val _selectedProperty = MutableLiveData<MarsProperty>()
     val selectedProperty: LiveData<MarsProperty> by ::_selectedProperty
+    val formattedPrice = Transformations.map(selectedProperty) { property ->
+        app.applicationContext.getString(
+            when (property.isRental) {
+                true -> R.string.display_price_monthly_rental
+                false -> R.string.display_price
+            },
+            property.price
+        )
+    }
+    val formattedType = Transformations.map(selectedProperty) { property ->
+        app.applicationContext.getString(
+            R.string.display_type,
+            app.applicationContext.getString(
+                when (property.isRental) {
+                    true -> R.string.type_rent
+                    false -> R.string.type_sale
+                }
+            )
+        )
+    }
 
     init {
         _selectedProperty.value = marsProperty

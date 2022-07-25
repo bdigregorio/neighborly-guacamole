@@ -75,8 +75,3 @@ fun imageSourceBoundTo(imageView: ImageView, response: MarsPropertiesResponse) {
         }
     }
 }
-
-@BindingAdapter("formatPriceFromDouble")
-fun formatPriceFromDouble(textView: TextView, price: Double) {
-    textView.text = "$$price"
-}

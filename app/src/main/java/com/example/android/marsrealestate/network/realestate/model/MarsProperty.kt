@@ -28,4 +28,11 @@ data class MarsProperty(
     val imageUrl: String,
     val type: String,
     val price: Double
-) : Parcelable
+) : Parcelable {
+    val isRental: Boolean
+        get() = (type == RENT)
+
+    companion object {
+        const val RENT = "rent"
+    }
+}
